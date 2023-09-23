@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-image: url('pito.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+        }
+
+        #clicker-container {
+            position: relative;
+            text-align: center;
+        }
+
+        #clicker-image {
+            cursor: pointer;
+            width: 200px;
+            transition: transform 0.2s ease;
+        }
+
+        #clicker-counter {
+            font-size: 50px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            color: black;
+            text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
+        }
+
+        #shop-button {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #shop-modal {
+            display: none;
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            background-color: white;
+            padding: 20px;
+            border: 2px solid #ccc;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #bottom-image {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="clicker-container">
+        <img id="clicker-image" src="ve.png" alt="Click me!" onclick="shrinkImage()">
+        <p id="clicker-counter">0</p>
+        <audio id="audio" src="bottle.mp3"></audio>
+    </div>
+
+    <button id="shop-button">Open Shop</button>
+    <div id="shop-modal">
+        <button id="close-button">Close</button>
+        <h2>Shop</h2>
+        <div class="shop-item" data-price="10" data-item-image="tuti.png" data-multiplier="2">
+            <img src="tuti.png" alt="Item 1" width="100">
+            <p>Price: 10 clicks</p>
+            <button class="buy-button">Buy</button>
+        </div>
+        <div class="shop-item" data-price="20" data-item-image="coka.png" data-multiplier="3">
+            <img src="coka.png" alt="Item 2" width="100">
+            <p>Price: 20 clicks</p>
+            <button class="buy-button">Buy</button>
+        </div>
+    </div>
+
+    <img id="bottom-image" src="mi.png" alt="Bottom Image">
+    
+    <script>
+        let clickCount = 0;
+        let bocas = 0;
+        let multiplier = 1;
+
+        const image = document.getElementById("clicker-image");
+        const counter = document.getElementById("clicker-counter");
+        const shopButton = document.getElementById("shop-button");
+        const shopModal = document.getElementById("shop-modal");
+        const closeButton = document.getElementById("close-button");
+        const buyButtons = document.querySelectorAll(".buy-button");
+        const audio = document.getElementById("audio");
+
+        shopButton.addEventListener("click", () => {
+            shopModal.style.display = "block";
+        });
+
+        closeButton.addEventListener("click", () => {
+            shopModal.style.display = "none";
+        });
+
+        buyButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                const price = parseInt(button.parentElement.getAttribute("data-price"), 10);
+                const itemImage = button.parentElement.getAttribute("data-item-image");
+                const itemMultiplier = parseInt(button.parentElement.getAttribute("data-multiplier"), 10);
+
+                if (clickCount >= price) {
+                    clickCount -= price;
+                    counter.textContent = clickCount;
+                    image.src = itemImage;
+                    multiplier = itemMultiplier;
+                    shopModal.style.display = "none";
+                } else {
+                    alert("Not enough clicks!");
+                }
+            });
+        });
+
+        function shrinkImage() {
+            clickCount += multiplier; // Use the current multiplier
+            counter.textContent = clickCount;
+            image.style.transform = "scale(0.8)";
+            setTimeout(() => {
+                image.style.transform = "scale(1)";
+            }, 200);
+            audio.currentTime = 0;
+            audio.play();
+        }
+    </script>
+</body>
+</html>

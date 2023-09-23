@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #clicker-container {
+            text-align: center;
+        }
+
+        #clicker-image {
+            width: 200px;
+            height: 200px;
+            cursor: pointer;
+        }
+
+        #clicker-counter {
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="clicker-container">
+        <img id="clicker-image" src="your-image.png" alt="Click me!">
+        <p id="clicker-counter">0</p>
+    </div>
+
+    <script>
+        let clickCount = 0;
+
+        // Get references to the image and counter elements
+        const image = document.getElementById("clicker-image");
+        const counter = document.getElementById("clicker-counter");
+
+        // Add a click event listener to the image
+        image.addEventListener("click", () => {
+            clickCount++;
+            counter.textContent = clickCount;
+        });
+    </script>
+</body>
+</html>
